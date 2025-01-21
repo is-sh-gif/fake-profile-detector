@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fake Profile Detector</title>
+</head>
+<body>
+<h2>Fake Profile Detector</h2>
+<input type="file" id="imageUpload" accept="image/*">
+<button onclick="uploadImage()">Check Profile</button>
+<p id="result">Result will appear here</p>
+
+<script>
+async function uploadImage() {
+const fileInput = document.getElementById('imageUpload');
+if (!fileInput.files.length) {
+alert('Please select an image');
+return;
+}
+
+let formData = new FormData();
+formData.append('image', fileInput.files[0]);
+
+try {
+let response = await fetch('https://your-backend.onrender.com/analyze-image', {
+method: 'POST',
+body: formData
+});
+
+let data = await response.json();
+document.getElementById('result').innerText = data.result;
+} catch (error) {
+document.getElementById('result').innerText = "Error in detection.";
+}
+}
+</script>
+</body>
+</html>
